@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>JillyX Admin — License Manager</title>
+  <meta name="description" content="Admin panel untuk mengelola lisensi JillyX" />
+  <meta name="theme-color" content="#0c0a1a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Login Page -->
+    <div id="login-page" class="page active">
+      <div class="login-container">
+        <div class="login-glow"></div>
+        <div class="login-card">
+          <div class="login-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-width="2"/></svg>
+          </div>
+          <div class="login-logo">
+            <span class="logo-text">Jilly<span class="logo-x">X</span></span>
+            <span class="logo-badge">ADMIN</span>
+          </div>
+          <p class="login-subtitle">License Management Panel</p>
+          <div class="input-group">
+            <label for="admin-password">Admin Password</label>
+            <div class="input-wrapper">
+              <!-- <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> -->
+              <input type="password" id="admin-password" placeholder="Enter admin password" autocomplete="off" />
+            </div>
+            <p id="login-error" class="error-text hidden"></p>
+          </div>
+          <button id="login-btn" class="btn btn-primary btn-full">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Sign In
+          </button>
+          <p class="login-footer">Secured by Supabase · JillyX v2.0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="page">
+      <!-- Mobile Header -->
+      <header class="mobile-header">
+        <div class="mobile-header-left">
+          <span class="logo-text logo-sm">Jilly<span class="logo-x">X</span></span>
+          <span class="logo-badge badge-sm">ADMIN</span>
+        </div>
+        <button id="logout-btn" class="btn-icon-header" title="Logout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </header>
+
+      <!-- Sidebar (Desktop only) -->
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+          <span class="logo-text logo-sm">Jilly<span class="logo-x">X</span></span>
+          <span class="logo-badge badge-sm">ADMIN</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active" data-section="overview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="nav-item" data-section="licenses">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+            <span>Licenses</span>
+          </a>
+          <a href="#" class="nav-item" data-section="devices">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            <span>Devices</span>
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <button id="logout-btn-desktop" class="nav-item nav-logout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Overview Section -->
+        <section id="section-overview" class="content-section active">
+          <div class="section-header">
+            <h1 class="section-title">Dashboard</h1>
+            <button id="create-license-btn" class="btn btn-primary btn-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span class="btn-text-desktop">New License</span>
+            </button>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card stat-card-total">
+              <div class="stat-icon stat-icon-total">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+              </div>
+              <div class="stat-info">
+                <p id="stat-total" class="stat-value">—</p>
+                <p class="stat-label">Total</p>
+              </div>
+            </div>
+            <div class="stat-card stat-card-active">
+              <div class="stat-icon stat-icon-active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="stat-info">
+                <p id="stat-active" class="stat-value">—</p>
+                <p class="stat-label">Active</p>
+              </div>
+            </div>
+            <div class="stat-card stat-card-expired">
+              <div class="stat-icon stat-icon-expired">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="stat-info">
+                <p id="stat-expired" class="stat-value">—</p>
+                <p class="stat-label">Expired</p>
+              </div>
+            </div>
+            <div class="stat-card stat-card-unused">
+              <div class="stat-icon stat-icon-unused">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              </div>
+              <div class="stat-info">
+                <p id="stat-unused" class="stat-value">—</p>
+                <p class="stat-label">Unused</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Recent Licenses</h2>
+              <button class="btn btn-ghost btn-sm" data-section="licenses">View All →</button>
+            </div>
+            <div id="recent-licenses-list" class="license-card-list">
+              <div class="list-empty">Loading...</div>
+            </div>
+            <!-- Table for desktop fallback -->
+            <div class="table-wrap desktop-only">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>License Key</th>
+                    <th>Status</th>
+                    <th>Device</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-licenses-body">
+                  <tr><td colspan="5" class="table-empty">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Licenses Section -->
+        <section id="section-licenses" class="content-section">
+          <div class="section-header">
+            <h1 class="section-title">Licenses</h1>
+            <button id="create-license-btn-2" class="btn btn-primary btn-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span class="btn-text-desktop">New</span>
+            </button>
+          </div>
+          <div class="section-toolbar">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="search-input" placeholder="Search license key..." />
+            </div>
+            <div class="filter-group">
+              <select id="filter-status">
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="expired">Expired</option>
+                <option value="unused">Unused</option>
+              </select>
+            </div>
+          </div>
+          <div id="all-licenses-list" class="license-card-list">
+            <div class="list-empty">Loading...</div>
+          </div>
+          <!-- Table for desktop fallback -->
+          <div class="card desktop-only">
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>License Key</th>
+                    <th>Status</th>
+                    <th>Device ID</th>
+                    <th>Activated</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="all-licenses-body">
+                  <tr><td colspan="5" class="table-empty">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Devices Section -->
+        <section id="section-devices" class="content-section">
+          <div class="section-header">
+            <h1 class="section-title">Devices</h1>
+          </div>
+          <div id="devices-list" class="license-card-list">
+            <div class="list-empty">Loading...</div>
+          </div>
+          <!-- Table for desktop fallback -->
+          <div class="card desktop-only">
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Device ID</th>
+                    <th>License Key</th>
+                    <th>Status</th>
+                    <th>Bound Since</th>
+                  </tr>
+                </thead>
+                <tbody id="devices-body">
+                  <tr><td colspan="4" class="table-empty">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Mobile Bottom Navigation -->
+      <nav class="mobile-bottom-nav">
+        <button class="bottom-nav-item active" data-section="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Home</span>
+        </button>
+        <button class="bottom-nav-item" data-section="licenses">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          <span>Licenses</span>
+        </button>
+        <button class="bottom-nav-item" data-section="devices">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          <span>Devices</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Create License Modal -->
+  <div id="create-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Create New License</h2>
+        <button class="modal-close" data-close="create-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="input-info" style="margin-bottom: 16px; font-size: 12px; color: var(--purple-400);">
+          * All new licenses are created with a <strong>Lifetime</strong> validity.
+        </div>
+        <div class="input-group">
+          <label for="new-license-notes">Notes (optional)</label>
+          <input type="text" id="new-license-notes" placeholder="e.g. Customer name, info..." />
+        </div>
+        <div id="generated-key-box" class="generated-key hidden">
+          <p class="generated-label">Generated License Key:</p>
+          <p id="generated-key-text" class="generated-value"></p>
+          <button id="copy-key-btn" class="btn btn-ghost btn-sm">Copy</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-close="create-modal">Cancel</button>
+        <button id="generate-btn" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          Generate Key
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div id="confirm-modal" class="modal-overlay hidden">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h2 id="confirm-title">Confirm</h2>
+        <button class="modal-close" data-close="confirm-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-message"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-close="confirm-modal">Cancel</button>
+        <button id="confirm-action-btn" class="btn btn-danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>

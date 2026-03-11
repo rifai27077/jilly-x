@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-main: #0a0a0f;
+    --color-primary: #141419;
+    --color-secondary: #1a1a22;
+    --color-accent: #e2e8f0;
+    --color-surface-dark: #111116;
+    --color-surface-nav: #0d0d12;
+  }
+}

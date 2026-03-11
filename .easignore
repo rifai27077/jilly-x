@@ -1,0 +1,13 @@
+# Admin panel (separate web app, not needed for mobile build)
+admin/
+
+# Generated directories
+android/
+ios/
+dist/
+
+# Development files
+.expo/
+.git/
+.vscode/
+*.log
