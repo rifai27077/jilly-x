@@ -1244,9 +1244,39 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
 
       {/* ==================== ChatJilly Chat Modal ==================== */}
       {showChatBot && (
-        <View className="absolute top-0 left-0 right-0 bottom-0 bg-[#060608] z-[200]">
+        <View className="absolute top-0 left-0 right-0 bottom-0 bg-[#060608] z-[200]" style={{ elevation: 999 }}>
           <View className="flex-1">
-
+            {/* Chat Header */}
+            <View className="bg-[#0e0e13] pb-4 px-5 border-b border-white/5 flex-row items-center justify-between" style={{ paddingTop: (RNStatusBar.currentHeight || 24) + 8 }}>
+              <View className="flex-row items-center">
+                <View className="w-10 h-10 rounded-full bg-[#141419] items-center justify-center mr-3 border border-white/10 shadow-md">
+                  <MaterialCommunityIcons name="robot-outline" size={24} color="#e2e8f0" />
+                </View>
+                <View>
+                  <Text className="text-white text-[18px] font-outfit-black tracking-wide">ChatJilly</Text>
+                  <Text className="text-[#94a3b8] text-[10px] font-outfit-bold tracking-widest uppercase mt-0.5">{"\u2022"} AI Optimizer</Text>
+                </View>
+              </View>
+              <View className="flex-row items-center">
+                <TouchableOpacity
+                  className="p-2 rounded-full bg-white/5 mr-2"
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    setChatMessages([]);
+                    setAnalysisState(ANALYSIS_INITIAL);
+                  }}
+                >
+                  <MaterialCommunityIcons name="broom" size={20} color="#94a3b8" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="p-2 rounded-full bg-white/5"
+                  activeOpacity={0.7}
+                  onPress={() => setShowChatBot(false)}
+                >
+                  <MaterialCommunityIcons name="close" size={20} color="#94a3b8" />
+                </TouchableOpacity>
+              </View>
+            </View>
             {/* Chat Messages */}
             <FlatList
               ref={chatListRef}
