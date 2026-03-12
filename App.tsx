@@ -15,6 +15,8 @@ import {
   AppState,
   Animated,
   Easing,
+  Linking,
+  StatusBar as RNStatusBar,
   FlatList,
   KeyboardAvoidingView as KAV2,
 } from "react-native";
@@ -682,10 +684,10 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
 
   return (
     <View className="flex-1 bg-brand-main">
-      <StatusBar style="light" />
+      <StatusBar style="light" hidden={true} />
 
       {/* Styled Header - Fuchsia colored with rounded bottom */}
-      <View className="bg-brand-primary pt-5 pb-4 px-5 rounded-b-[24px] shadow-md shadow-black/50">
+      <View className="bg-brand-primary pb-4 px-5 rounded-b-[24px] shadow-md shadow-black/50" style={{ paddingTop: (RNStatusBar.currentHeight || 24) + 8 }}>
         <View className="flex-row items-center justify-between z-50">
           <View className="flex-1 items-start justify-center relative z-50">
             <TouchableOpacity 
@@ -1129,13 +1131,18 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
                 Alert.alert("Reset Settings", "Are you sure you want to restore default settings?", [
                   { text: "Cancel", style: "cancel" },
                   { text: "Reset", style: "destructive", onPress: () => {
-                    setAdvanced({ memoryHeadSens: false, reduceRecoilAnim: false, fixMemoryCache: false, optimizeDevice: false, optimizeCode: false, clearCacheCookies: false });
-                    setContents({ sensitivities: false, methods: false });
-                    setHardware({ headTracking: false, superTouch: false, chatBot: false, buttonTrick: false, dpiCalculator: false });
-                    setAdjustments({ sensitivity: 50, recoil: 50, touchSpeed: 50 });
+                    const defaultAdv = { memoryHeadSens: false, reduceRecoilAnim: false, fixMemoryCache: false, optimizeDevice: false, optimizeCode: false, clearCacheCookies: false };
+                    const defaultCon = { sensitivities: false, methods: false };
+                    const defaultHw = { headTracking: false, superTouch: false, chatBot: false, buttonTrick: false, dpiCalculator: false };
+                    const defaultAdj = { sensitivity: 50, recoil: 50, touchSpeed: 50 };
+                    setAdvanced(defaultAdv);
+                    setContents(defaultCon);
+                    setHardware(defaultHw);
+                    setAdjustments(defaultAdj);
+                    setAppliedAdjustments(defaultAdj);
                     setSelectedResolution("Native Device");
-                    saveSettings({}); // Clear storage
-                    Alert.alert("Success", "Settings have been reset to default.");
+                    saveSettings({ advanced: defaultAdv, contents: defaultCon, hardware: defaultHw, adjustments: defaultAdj, selectedResolution: "Native Device" });
+                    Alert.alert("\u2705 Success", "All settings have been restored to factory defaults.");
                   }}
                 ]);
               }}
@@ -1150,7 +1157,15 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
               activeOpacity={0.7}
               onPress={() => {
                 setShowDropdownMenu(false);
-                Alert.alert("Contact Support", "Please reach out to your administrator for assistance with your JillyX license.");
+                Alert.alert(
+                  "Contact Admin",
+                  "Hubungi admin JillyX melalui:",
+                  [
+                    { text: "WhatsApp", onPress: () => Linking.openURL("https://wa.me/6281234567890?text=Halo%20Admin%20JillyX") },
+                    { text: "Telegram", onPress: () => Linking.openURL("https://t.me/JillyXAdmin") },
+                    { text: "Batal", style: "cancel" },
+                  ]
+                );
               }}
             >
               <MaterialCommunityIcons name="headset" size={18} color="#cbd5e1" />
@@ -1229,39 +1244,8 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
 
       {/* ==================== ChatJilly Chat Modal ==================== */}
       {showChatBot && (
-        <View className="absolute top-0 left-0 right-0 bottom-0 bg-[#060608]/95 z-[200]">
+        <View className="absolute top-0 left-0 right-0 bottom-0 bg-[#060608] z-[200]">
           <View className="flex-1">
-            {/* Chat Header */}
-            <View className="bg-[#0e0e13] pt-12 pb-4 px-5 border-b border-white/5 flex-row items-center justify-between">
-              <View className="flex-row items-center">
-                <View className="w-10 h-10 rounded-full bg-[#141419] items-center justify-center mr-3 border border-white/10 shadow-md">
-                  <MaterialCommunityIcons name="robot-outline" size={24} color="#e2e8f0" />
-                </View>
-                <View>
-                  <Text className="text-white text-[18px] font-outfit-black tracking-wide">ChatJilly</Text>
-                  <Text className="text-[#94a3b8] text-[10px] font-outfit-bold tracking-widest uppercase mt-0.5">\u2022 AI Optimizer</Text>
-                </View>
-              </View>
-              <View className="flex-row items-center">
-                <TouchableOpacity
-                  className="p-2 rounded-full bg-white/5 mr-2"
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    setChatMessages([]);
-                    setAnalysisState(ANALYSIS_INITIAL);
-                  }}
-                >
-                  <MaterialCommunityIcons name="broom" size={20} color="#94a3b8" />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  className="p-2 rounded-full bg-white/5"
-                  activeOpacity={0.7}
-                  onPress={() => setShowChatBot(false)}
-                >
-                  <MaterialCommunityIcons name="close" size={20} color="#94a3b8" />
-                </TouchableOpacity>
-              </View>
-            </View>
 
             {/* Chat Messages */}
             <FlatList
@@ -1304,33 +1288,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
                       </View>
                     </View>
                     
-                    {/* Auto-Apply Button below bot message if settings detected */}
-                    {parsedSettings && (
-                      <View className="flex-row mt-2 ml-10">
-                        <TouchableOpacity
-                          className={`flex-row items-center px-4 py-2 rounded-full border shadow-sm ${
-                            isAutoApplying 
-                              ? "bg-[#1e293b]/80 border-white/10" 
-                              : "bg-[#6d28d9]/20 border-[#8b5cf6]/40"
-                          }`}
-                          activeOpacity={0.7}
-                          disabled={isAutoApplying}
-                          onPress={() => applyAutoSettings(parsedSettings)}
-                        >
-                          {isAutoApplying ? (
-                            <>
-                              <ActivityIndicator size="small" color="#a78bfa" />
-                              <Text className="text-[#a78bfa] text-xs font-outfit-bold ml-2">Menerapkan...</Text>
-                            </>
-                          ) : (
-                            <>
-                              <MaterialCommunityIcons name="magic-staff" size={16} color="#a78bfa" />
-                              <Text className="text-[#a78bfa] text-xs font-outfit-bold ml-2">Terapkan Konfigurasi</Text>
-                            </>
-                          )}
-                        </TouchableOpacity>
-                      </View>
-                    )}
+
                   </View>
                 );
               }}
