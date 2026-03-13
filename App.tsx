@@ -1245,7 +1245,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
       {/* ==================== ChatJilly Chat Modal ==================== */}
       {showChatBot && (
         <View className="absolute top-0 left-0 right-0 bottom-0 bg-[#060608] z-[200]" style={{ elevation: 999 }}>
-          <View className="flex-1">
+          <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === "ios" ? "padding" : "height"}>
             {/* Chat Header */}
             <View className="bg-[#0e0e13] pb-4 px-5 border-b border-white/5 flex-row items-center justify-between" style={{ paddingTop: (RNStatusBar.currentHeight || 24) + 8 }}>
               <View className="flex-row items-center">
@@ -1253,7 +1253,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
                   <MaterialCommunityIcons name="robot-outline" size={24} color="#e2e8f0" />
                 </View>
                 <View>
-                  <Text className="text-white text-[18px] font-outfit-black tracking-wide">JillyX Chatbot</Text>
+                  <Text className="text-white text-[18px] font-outfit-black tracking-wide">ChatBot</Text>
                   <Text className="text-[#94a3b8] text-[10px] font-outfit-bold tracking-widest uppercase mt-0.5">{"\u2022"} AI Optimizer</Text>
                 </View>
               </View>
@@ -1344,7 +1344,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
               <View className="flex-row items-end bg-[#1a1a24] rounded-[24px] border border-white/10 px-4 py-2 shadow-lg">
                 <TextInput
                   className="flex-1 text-white text-[14px] font-outfit-medium py-2 max-h-24"
-                  placeholder="Ask ChatJilly..."
+                  placeholder="Tanya ChatBot..."
                   placeholderTextColor="#64748b"
                   value={chatInput}
                   onChangeText={setChatInput}
@@ -1370,7 +1370,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
         </View>
       )}
     </View>
