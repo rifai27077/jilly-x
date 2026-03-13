@@ -231,33 +231,36 @@ function getChatJillyResponse(input: string): string {
 }
 
 // ==================== Device Analysis Flow ====================
-type AnalysisStep = "idle" | "device" | "ram" | "processor" | "fps" | "playstyle" | "done";
+type AnalysisStep = "idle" | "device" | "ram" | "processor" | "refreshRate" | "fps" | "playstyle" | "done";
 
 type DeviceAnalysis = {
   step: AnalysisStep;
   device: string;
   ram: string;
   processor: string;
+  refreshRate: string;
   fps: string;
   playstyle: string;
 };
 
 const ANALYSIS_INITIAL: DeviceAnalysis = {
-  step: "idle", device: "", ram: "", processor: "", fps: "", playstyle: ""
+  step: "idle", device: "", ram: "", processor: "", refreshRate: "", fps: "", playstyle: ""
 };
 
 function getAnalysisQuestion(step: AnalysisStep): string {
   switch (step) {
     case "device":
-      return "\u{1F4F1} Step 1/5 — Device Model\n\nWhat device are you using?\n(e.g. Samsung A12, Redmi Note 11, iPhone 13, ROG Phone 7)";
+      return "\u{1F4F1} Step 1/6 \u2014 Device Model\n\nHp apa yang kamu pakai?\n(cth: Samsung A12, Redmi Note 11, iPhone 13, ROG Phone 7)";
     case "ram":
-      return "\u{1F4CA} Step 2/5 — RAM Size\n\nHow much RAM does your device have?\n(e.g. 2GB, 3GB, 4GB, 6GB, 8GB, 12GB)";
+      return "\u{1F4CA} Step 2/6 \u2014 RAM Size\n\nBerapa ukuran RAM hp kamu?\n(cth: 2GB, 3GB, 4GB, 6GB, 8GB, 12GB)";
     case "processor":
-      return "\u2699\uFE0F Step 3/5 — Processor\n\nWhat processor does your device use? (if you know)\n(e.g. Snapdragon 680, Helio G99, A16 Bionic)\n\nType 'skip' if you're not sure.";
+      return "\u2699\uFE0F Step 3/6 \u2014 Processor\n\nApa prosesor hp kamu? (jika tahu)\n(cth: Snapdragon 680, Helio G99, A16 Bionic)\n\nKetik 'skip' jika tidak tahu.";
+    case "refreshRate":
+      return "\u{1F504} Step 4/6 \u2014 Refresh Rate\n\nBerapa refresh rate layar hp kamu?\n\n\u2022 60Hz (Standar)\n\u2022 90Hz (Mulus)\n\u2022 120Hz (Sangat Mulus)\n\nKetik 'skip' jika tidak tahu.";
     case "fps":
-      return "\u{1F3AE} Step 4/5 — FPS Stability\n\nHow is your current FPS in Free Fire?\n\n\u2022 Smooth (60 FPS stable)\n\u2022 Moderate (40-50 FPS, some drops)\n\u2022 Laggy (below 30 FPS, frequent stutters)";
+      return "\u{1F3AE} Step 5/6 \u2014 FPS Stability\n\nBagaimana kondisi FPS saat main Free Fire?\n\n\u2022 Mulus (60 FPS stabil)\n\u2022 Sedang (40-50 FPS, kadang drop)\n\u2022 Patah-patah (di bawah 30 FPS, sering lag)";
     case "playstyle":
-      return "\u{1F3AF} Step 5/5 — Play Style\n\nWhat's your preferred play style?\n\n\u2022 Rush — aggressive close combat\n\u2022 Sniper — long range precision\n\u2022 Balanced — mix of both";
+      return "\u{1F3AF} Step 6/6 \u2014 Play Style\n\nApa gaya bermain (playstyle) favoritmu?\n\n\u2022 Rusher \u2014 pertempuran jarak dekat yang agresif\n\u2022 Sniper \u2014 akurasi jarak jauh\n\u2022 Balanced \u2014 kombinasi keduanya";
     default:
       return "";
   }
@@ -267,12 +270,13 @@ function classifyDevice(analysis: DeviceAnalysis): { tier: string; recommendatio
   const ramNum = parseInt(analysis.ram.replace(/[^0-9]/g, '')) || 0;
   const fpsLower = analysis.fps.toLowerCase();
   const styleLower = analysis.playstyle.toLowerCase();
+  const refreshRateLower = analysis.refreshRate.toLowerCase();
 
   // Classify tier
   let tier: string;
-  if (ramNum <= 3 || fpsLower.includes('lag')) {
+  if (ramNum <= 3 || fpsLower.includes('lag') || fpsLower.includes('patah')) {
     tier = "Low-end";
-  } else if (ramNum >= 8 || fpsLower.includes('smooth')) {
+  } else if (ramNum >= 8 || refreshRateLower.includes('120') || fpsLower.includes('smooth') || fpsLower.includes('mulus')) {
     tier = "High-end";
   } else {
     tier = "Mid-range";
@@ -353,34 +357,36 @@ function classifyDevice(analysis: DeviceAnalysis): { tier: string; recommendatio
   const tierEmoji = tier === "Low-end" ? "🔴" : tier === "High-end" ? "🟢" : "🟡";
   const tierLabel = tier.toUpperCase();
   const styleLabel = isRush ? "Rush" : isSniper ? "Sniper" : "Balanced";
+  const refreshText = analysis.refreshRate.toLowerCase() === "skip" ? "60Hz (Asumsi)" : analysis.refreshRate;
 
-  const result = `📋 DEVICE ANALYSIS COMPLETE
+  const result = `📋 INFO DEVICE & REKOMENDASI JILLYX
 
 📱 Device: ${analysis.device}
 📊 RAM: ${analysis.ram}
 ⚙️ Processor: ${analysis.processor || 'Unknown'}
-🎮 FPS: ${analysis.fps}
-🎯 Style: ${styleLabel}
+🔄 Refresh Rate: ${refreshText}
+🎮 Kondisi FPS: ${analysis.fps}
+🎯 Playstyle: ${styleLabel}
 
-${tierEmoji} Device Tier: ${tierLabel}
+${tierEmoji} Kategori Device: ${tierLabel}
 
 ────────────────────
 
-🎛️ Recommended Settings:
+🎛️ Target Konfigurasi:
 • Sensitivity: ${sens}%
 • Recoil Control: ${recoil}%
 • Touch Speed: ${touchSpeed}%
-• DPI: ${dpi}
-• Resolution: ${resolution}
+• DPI Tracker: ${dpi}
+• Resolusi: ${resolution}
 
 ────────────────────
 
-🛠️ Recommended Tools:
+🛠️ Fitur Rekomendasi:
 ${tools.join('\n')}
 
 ────────────────────
 
-🏆 Apply these settings in JillyX, hit 'Apply Tuning', and restart Free Fire for best results!`;
+🏆 Semua fitur di atas siap diaktifkan! Cukup klik tombol "Terapkan Konfigurasi" di bawah chat ini, dan ChatBot akan mengingat profil HP kamu untuk ke depannya.`;
 
   return { tier, recommendations: result };
 }
@@ -618,8 +624,13 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
           break;
         case "processor":
           nextState.processor = text.toLowerCase() === "skip" ? "Unknown" : text;
+          nextState.step = "refreshRate";
+          botText = `${nextState.processor === "Unknown" ? "Oke, dilewati!" : nextState.processor + " dicatat!"} \u2705\n\n` + getAnalysisQuestion("refreshRate");
+          break;
+        case "refreshRate":
+          nextState.refreshRate = text.toLowerCase() === "skip" ? "Unknown" : text;
           nextState.step = "fps";
-          botText = `${nextState.processor === "Unknown" ? "No worries!" : nextState.processor + " noted!"} \u2705\n\n` + getAnalysisQuestion("fps");
+          botText = `${nextState.refreshRate === "Unknown" ? "Refresh rate dilewati!" : nextState.refreshRate + " dicatat!"} \u2705\n\n` + getAnalysisQuestion("fps");
           break;
         case "fps":
           nextState.fps = text;
@@ -642,9 +653,9 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
 
     // Check for analysis trigger
     const q = text.toLowerCase();
-    if (q.match(/^analy|device\s*analy|scan\s*my|check\s*my\s*device/)) {
+    if (q.match(/^analy|device\s*analy|scan\s*my|check\s*my\s*device|^analisa/)) {
       setAnalysisState({ ...ANALYSIS_INITIAL, step: "device" });
-      const botMsg: ChatMessage = { role: "bot", text: "\u{1F50D} Starting Device Analysis...\n\nI'll ask you 5 quick questions to find your optimal JillyX settings.\n\n" + getAnalysisQuestion("device") };
+      const botMsg: ChatMessage = { role: "bot", text: "\u{1F50D} Memulai Analisis Device...\n\nSaya akan menanyakan 6 pertanyaan singkat untuk menemukan pengaturan JillyX yang paling optimal untuk hp kamu.\n\n" + getAnalysisQuestion("device") };
       setChatMessages(prev => [...prev, botMsg]); // User msg already added
       return;
     }
