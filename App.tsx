@@ -911,7 +911,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
               {[
                 { key: "headTracking" as const, label: "HeadTracking", desc: "Features to calibrate your gaze", icon: "pen" },
                 { key: "superTouch" as const, label: "SuperTouch", desc: "Melt or touch the fabric", icon: "gesture-tap" },
-                { key: "buttonTrick" as const, label: "ButtonTrick", desc: "Shoot button overlay", icon: "plus-circle-outline" },
+                { key: "buttonTrick" as const, label: "Performance Monitor", desc: "Monitoring performance device", icon: "chart-line" },
                 { key: "dpiCalculator" as const, label: "DPI Calculator", desc: selectedResolution, icon: "calculator-variant-outline" },
               ].map((item) => (
                 <View

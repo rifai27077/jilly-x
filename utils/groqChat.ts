@@ -23,7 +23,7 @@ ATURAN PENTING:
 PENGETAHUAN FITUR JILLYX:
 - Tab Contents: Sensitivities (kalibrasi bidik), Methods (kontrol crosshair). Advanced: Memory Head Sensitivity, Reduce Recoil, Fix Memory Cache, Optimize Device, Optimize Code, Clear Cache.
 - Tab Adjust: Sensitivity (%), Recoil Control (%), Touch Speed (%). Ingatkan user tekan "Apply Tuning" setelah diatur.
-- Tab Hardware: HeadTracking, SuperTouch, ButtonTrick, DPI Calculator, Resolution Spoofer (720p/900p/1080p/1440p).
+- Tab Hardware: HeadTracking, SuperTouch, Performance Monitor, DPI Calculator, Resolution Spoofer (720p/900p/1080p/1440p).
 
 PANDUAN KONFIGURASI (gunakan hanya jika diminta):
 - Device Low-End: Sensitivity 75-85%, Recoil 85-95%, Touch 50-60%, 720p
