@@ -318,10 +318,11 @@ type DeviceAnalysis = {
   refreshRate: string;
   fps: string;
   playstyle: string;
+  tier?: string;
 };
 
 const ANALYSIS_INITIAL: DeviceAnalysis = {
-  step: "idle", device: "", ram: "", processor: "", refreshRate: "", fps: "", playstyle: ""
+  step: "idle", device: "", ram: "", processor: "", refreshRate: "", fps: "", playstyle: "", tier: ""
 };
 
 function getAnalysisQuestion(step: AnalysisStep): string {
@@ -719,6 +720,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
           nextState.playstyle = text;
           nextState.step = "done";
           const result = classifyDevice(nextState);
+          nextState.tier = result.tier;
           botText = result.recommendations;
           break;
       }
@@ -742,14 +744,29 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
     setIsChatLoading(true);
     try {
       // Map existing messages to Groq format.
-      // We only filter out the intermediate analysis questions to save tokens, but KEEP the final analysis result!
+      // Filter out the intermediate analysis questions to save tokens, but KEEP the final analysis result!
       const groqHistory: GroqMessage[] = chatMessages
-        .filter(m => !m.text.includes("Starting Device Analysis") && !m.text.includes("Step "))
+        .filter(m => !m.text.includes("Memulai Analisis Device") && !m.text.includes("Step "))
         .map(m => ({
           role: m.role === "bot" ? "assistant" : "user",
           content: m.text
         }));
       
+      // Inject current JillyX state & device profile if available
+      let injectedContext = "";
+      if (analysisState.step === "done" || appliedAdjustments.sensitivity) {
+        const tierStr = analysisState.tier || "Unknown (Cek via 'analyze')";
+        const styleStr = analysisState.playstyle || "Unknown";
+        injectedContext = `[SISTEM INTERNAL - JANGAN DIBALAS]
+Profil Pengguna Saat Ini:
+- Device Tier: ${tierStr}
+- Playstyle: ${styleStr}
+- JillyX Settings Aktif: Sens: ${appliedAdjustments.sensitivity}%, Recoil: ${appliedAdjustments.recoil}%, Touch: ${appliedAdjustments.touchSpeed}%, Res: ${selectedResolution}`;
+        
+        // Add as a hidden system message right before the user's prompt
+        groqHistory.push({ role: "system", content: injectedContext });
+      }
+
       // Append current user message
       groqHistory.push({ role: "user", content: text });
 
