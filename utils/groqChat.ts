@@ -30,7 +30,24 @@ PENGETAHUAN FITUR JILLYX:
 PANDUAN KONFIGURASI (gunakan hanya jika diminta):
 - Device Low-End: Sensitivity 75-85%, Recoil 85-95%, Touch 50-60%, 720p
 - Device Mid-Range: Sensitivity 80-90%, Recoil 80-90%, Touch 60-70%, 900p
-- Device High-End: Sensitivity 90-100%, Recoil 70-80%, Touch 70-80%, 1440p`;
+- Device High-End: Sensitivity 90-100%, Recoil 70-80%, Touch 70-80%, 1440p
+
+FORMAT KONFIGURASI YANG DIWAJIBKAN:
+Ketika kamu memberikan saran konfigurasi/optimasi penuh, kamu WAJIB memformatnya persis seperti ini (gunakan bahasa Indonesia atau Inggris sesuai konteks, tapi strukturnya harus sama):
+
+**Recommended Settings**
+Sensitivity: [Nilai]%
+Recoil Control: [Nilai]%
+Touch Speed: [Nilai]%
+
+**Recommended Tools**
+[Fitur 1]
+[Fitur 2]
+[Fitur 3]
+
+**Resolution**
+[Resolusi yang disarankan, misalnya 1080p atau nama device profil]
+[Penjelasan singkat mengapa konfigurasi ini akan bekerja optimal di hp user]`;
 
 export async function sendToGroq(
   messages: GroqMessage[]
@@ -46,7 +63,7 @@ export async function sendToGroq(
         model: GROQ_MODEL,
         messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
         temperature: 0.7,
-        max_tokens: 300,
+        max_tokens: 450,
         top_p: 0.9,
       }),
     });
