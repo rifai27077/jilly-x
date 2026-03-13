@@ -181,19 +181,96 @@ function getChatJillyResponse(input: string): string {
     return "\u{1F4FA} Resolution Spoofer:\nAdjusts screen resolution to improve FPS stability.\n\n\u2022 Available in Hardware tab\n\u2022 Choose from Samsung, ROG, iPhone profiles\n\u2022 Lower resolution = higher FPS\n\u2022 720p for max FPS on low-end devices\n\u2022 1080p for balanced quality on mid-range\n\u2022 Restart game after applying!";
   }
 
-  // FPS / Lag
-  if (q.match(/fps|frame|lag|stutter|smooth/)) {
-    return "\u{1F680} FPS Stability Guide:\n\n\u2022 Enable ALL 6 Advanced toggles\n\u2022 Use Resolution Spoofer — go 720p if lagging\n\u2022 Enable Fix Memory Cache + Optimize Device\n\u2022 Clear Cache & Cookies before ranked\n\u2022 Close background apps\n\u2022 Set Recoil Control to 75% to reduce GPU load\n\nThis can boost FPS by 20-40% on most devices!";
+  // FPS / Lag (Troubleshooting)
+  if (q.match(/fps|frame|lag|stutter|smooth|patah/)) {
+    return `🚀 Troubleshooting: FPS Drop & Lag
+
+🔍 Kemungkinan Penyebab:
+• Resolusi tinggi membebani GPU
+• Aplikasi background memakan RAM
+• Cache game menumpuk
+
+🎛️ Rekomendasi JillyX:
+• Resolusi: 720p (Performa Maksimal)
+• Recoil Control: 75% (kalkulasi lebih ringan)
+• Tab Contents: Aktifkan 'Fix Memory Cache', 'Optimize Device', 'Optimize Code', 'Clear Cache & Cookies'
+
+Tekan 'Apply Tuning' dan restart Free Fire!`;
   }
 
-  // Recoil
-  if (q.match(/recoil|spray|control/)) {
-    return "\u{1F52B} Recoil Control:\n\n\u2022 Enable 'Reduce Recoil Animation' in Advanced\n\u2022 Set Recoil Control slider to 70-85%\n\u2022 Combine with HeadTracking for auto-compensation\n\u2022 Works great with AK, M4A1, Groza, Thompson\n\u2022 Lower touch speed (50-60%) for smoother control";
+
+  // Recoil (Troubleshooting)
+  if (q.match(/recoil|spray|control|kheker|goyang/)) {
+    return `🔫 Troubleshooting: Recoil Liar / Berat
+
+🔍 Kemungkinan Penyebab:
+• Rasio sensitivity & drag tidak sesuai
+• Menembak brutal tanpa mereduksi animasi recoil
+
+🎛️ Rekomendasi JillyX:
+• Recoil Control: Ubah ke 85%
+• Touch Speed: Turunkan ke 50-60% untuk drag mulus
+• Tab Contents: Aktifkan 'Reduce Recoil Animation'
+• Tab Hardware: Aktifkan 'HeadTracking' (mengunci bidikan vertikal)
+
+Tekan 'Apply Tuning' untuk mengaktifkan!`;
   }
 
-  // Drag headshot
-  if (q.match(/drag|headshot|head\s*shot|snipe/)) {
-    return "\u{1F3AF} Drag Headshot Setup:\n\n\u2022 Enable Sensitivities in Contents tab\n\u2022 Enable Memory Head Sensitivity in Advanced\n\u2022 Sensitivity slider: 75-90%\n\u2022 Touch Speed: 55-65%\n\u2022 Enable HeadTracking + SuperTouch\n\u2022 Use 2-3 finger layout for drag technique";
+
+  // Drag headshot / Headshot difficulty (Troubleshooting)
+  if (q.match(/drag|headshot|head\s*shot|snipe|miss|hard|susah|kepala/)) {
+    return `🎯 Troubleshooting: Susah Headshot (Drag Aim)
+
+🔍 Kemungkinan Penyebab:
+• Sensitivity aim terlalu lambat
+• DPI kurang memaksimalkan kalibrasi drag
+• Tracking kepala memori tidak stabil
+
+🎛️ Rekomendasi JillyX:
+• Sensitivity: Naikkan ke 90-100%
+• Touch Speed: Ubah ke 65%
+• DPI Tracker: Nyalakan pengaturan ini
+• Tab Contents: Aktifkan 'Sensitivities', 'Methods', 'Memory Head Sensitivity'
+• Tab Hardware: Aktifkan 'HeadTracking'
+
+Atur slider, aktifkan fitur, lalu tekan 'Apply Tuning'!`;
+  }
+
+  // Crosshair shaking (Troubleshooting)
+  if (q.match(/shake|shaking|tremble|unstable|crosshair|bergetar/)) {
+    return `🎯 Troubleshooting: Crosshair Bergetar / Tremor
+
+🔍 Kemungkinan Penyebab:
+• Sensitivity terlalu ekstrim / tinggi
+• Sampling rate sentuhan tidak sinkron
+• Konflik DPI bawaan hp
+
+🎛️ Rekomendasi JillyX:
+• Sensitivity: Turunkan ke 65-75%
+• Touch Speed: Turunkan ke 50%
+• DPI Tracker: Matikan jika sedang menyala
+• Tab Contents: Aktifkan 'Methods' (kontrol crosshair presisi)
+• Tab Hardware: Matikan 'SuperTouch' sementara
+
+Tekan 'Apply Tuning' untuk aim yang lebih stabil!`;
+  }
+
+  // Touch Delay (Troubleshooting)
+  if (q.match(/delay|touch|slow|response|lemot/)) {
+    return `📱 Troubleshooting: Touch Delay / Layar Kurang Responsif
+
+🔍 Kemungkinan Penyebab:
+• Suhu hp panas (thermal throttling)
+• Touch sampling rate tertahan
+• Beban resolusi terlalu berat untuk GPU
+
+🎛️ Rekomendasi JillyX:
+• Touch Speed: Maksimalkan hingga 100%
+• Resolusi: 900p (meringankan render GPU)
+• Tab Hardware: Aktifkan 'SuperTouch' dan 'Performance Monitor'
+• Tab Contents: Aktifkan 'Optimize Device' & 'Clear Cache & Cookies'
+
+Tekan 'Apply Tuning' untuk mematikan input lag!`;
   }
 
   // Greetings
