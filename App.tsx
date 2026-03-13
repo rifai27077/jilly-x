@@ -588,6 +588,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [analysisState, setAnalysisState] = useState<DeviceAnalysis>(ANALYSIS_INITIAL);
   const chatListRef = React.useRef<FlatList>(null);
+  const lastAnimatedMsgIndex = React.useRef<number>(-1);
 
   // Centralized chat send handler
   const handleChatSend = async () => {
@@ -910,7 +911,6 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
               {[
                 { key: "headTracking" as const, label: "HeadTracking", desc: "Features to calibrate your gaze", icon: "pen" },
                 { key: "superTouch" as const, label: "SuperTouch", desc: "Melt or touch the fabric", icon: "gesture-tap" },
-                { key: "chatBot" as const, label: "Chat Bot", desc: "To Xia.", icon: "robot-outline" },
                 { key: "buttonTrick" as const, label: "ButtonTrick", desc: "Shoot button overlay", icon: "plus-circle-outline" },
                 { key: "dpiCalculator" as const, label: "DPI Calculator", desc: selectedResolution, icon: "calculator-variant-outline" },
               ].map((item) => (
@@ -1253,7 +1253,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
                   <MaterialCommunityIcons name="robot-outline" size={24} color="#e2e8f0" />
                 </View>
                 <View>
-                  <Text className="text-white text-[18px] font-outfit-black tracking-wide">ChatJilly</Text>
+                  <Text className="text-white text-[18px] font-outfit-black tracking-wide">JillyX Chatbot</Text>
                   <Text className="text-[#94a3b8] text-[10px] font-outfit-bold tracking-widest uppercase mt-0.5">{"\u2022"} AI Optimizer</Text>
                 </View>
               </View>
@@ -1264,6 +1264,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
                   onPress={() => {
                     setChatMessages([]);
                     setAnalysisState(ANALYSIS_INITIAL);
+                    lastAnimatedMsgIndex.current = -1;
                   }}
                 >
                   <MaterialCommunityIcons name="broom" size={20} color="#94a3b8" />
@@ -1286,7 +1287,8 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
               contentContainerStyle={{ paddingBottom: 16 }}
               renderItem={({ item, index }) => {
                 const parsedSettings = item.role === "bot" ? parseChatSettings(item.text) : null;
-                const isLatestBotMsg = item.role === "bot" && index === chatMessages.length - 1 && !isChatLoading;
+                const shouldAnimate = item.role === "bot" && index === chatMessages.length - 1 && !isChatLoading && index > lastAnimatedMsgIndex.current;
+                if (shouldAnimate) lastAnimatedMsgIndex.current = index;
 
                 return (
                   <View className={`mb-4 flex-col ${item.role === "user" ? "items-end" : "items-start"}`}>
@@ -1310,7 +1312,7 @@ function HomeScreen({ onLicenseExpired }: { onLicenseExpired?: () => void }) {
                         ) : (
                           <TypewriterText
                             text={item.text}
-                            enabled={isLatestBotMsg}
+                            enabled={shouldAnimate}
                             delay={10}
                             style={{ color: "#f1f5f9", fontSize: 13, fontFamily: "Outfit-Medium", lineHeight: 22 }}
                           />
