@@ -290,34 +290,35 @@ function classifyDevice(analysis: DeviceAnalysis): { tier: string; recommendatio
   let resolution: string;
 
   if (tier === "Low-end") {
-    if (isRush) {
-      sens = 85; recoil = 90; touchSpeed = 60; dpi = 220;
-    } else if (isSniper) {
-      sens = 58; recoil = 55; touchSpeed = 40; dpi = 200;
-    } else {
-      sens = 72; recoil = 80; touchSpeed = 50; dpi = 210;
-    }
+    // Range: Sens 75-85, Recoil 85-95, Touch 50-60
+    sens = 80;
+    recoil = 90;
+    touchSpeed = 55;
+    dpi = 220;
     resolution = "720p";
   } else if (tier === "High-end") {
-    if (isRush) {
-      sens = 92; recoil = 85; touchSpeed = 72; dpi = 380;
-    } else if (isSniper) {
-      sens = 65; recoil = 60; touchSpeed = 48; dpi = 340;
-    } else {
-      sens = 78; recoil = 75; touchSpeed = 62; dpi = 360;
-    }
+    // Range: Sens 90-100, Recoil 70-80, Touch 70-80
+    sens = 95;
+    recoil = 75;
+    touchSpeed = 75;
+    dpi = 380;
     resolution = "1440p";
   } else {
-    // Mid-range
-    if (isRush) {
-      sens = 88; recoil = 95; touchSpeed = 65; dpi = 300;
-    } else if (isSniper) {
-      sens = 62; recoil = 58; touchSpeed = 45; dpi = 260;
-    } else {
-      sens = 75; recoil = 82; touchSpeed = 55; dpi = 280;
-    }
+    // Mid-range: Sens 80-90, Recoil 80-90, Touch 60-70
+    sens = 85;
+    recoil = 85;
+    touchSpeed = 65;
+    dpi = 300;
     resolution = "900p";
   }
+
+  // Adjust values based on play style
+  if (isRush) {
+    sens += 5;
+  } else if (isSniper) {
+    sens -= 5;
+  }
+
 
   // ===== Compute tool recommendations =====
   let tools: string[] = [];
